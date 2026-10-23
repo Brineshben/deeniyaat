@@ -61,7 +61,7 @@ class AttendanceOverviewCard extends StatelessWidget {
                       SizedBox(width: 6.w),
                       Expanded(
                         child: Text(
-                          'Attendance Overview Today',
+                          'Attendance Summary Today',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

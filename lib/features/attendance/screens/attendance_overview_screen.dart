@@ -6,6 +6,8 @@ import '../../../core/theme/colors.dart';
 import '../../../core/utils/responsive.dart';
 import '../../navigation/widgets/animated_bottom_nav_bar.dart';
 import '../controller/attendance_controller.dart';
+import '../widgets/select_class_sheet.dart';
+import '../widgets/attendance_overview_by_date_sheet.dart';
 import 'students_requiring_attention_screen.dart';
 import 'absent_and_leave_days_screen.dart';
 
@@ -57,7 +59,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
                         SizedBox(height: 12.h),
 
                         // Header (Title & Add Button)
-                        _buildHeader(),
+                        _buildHeader(context),
 
                         SizedBox(height: 16.h),
 
@@ -67,7 +69,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
                         SizedBox(height: 14.h),
 
                         // Weekly Insight Card
-                        _buildWeeklyInsightCard(),
+                        _buildWeeklyInsightCard(context),
 
                         SizedBox(height: 12.h),
 
@@ -111,7 +113,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
@@ -132,18 +134,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
           ),
           SizedBox(width: 8.w),
           GestureDetector(
-            onTap: () {
-              Get.snackbar(
-                'Add Record',
-                'Add custom attendance entry',
-                snackPosition: SnackPosition.TOP,
-                duration: const Duration(seconds: 2),
-                backgroundColor: Colors.white,
-                colorText: AppColors.primaryOlive,
-                margin: const EdgeInsets.all(16),
-                borderRadius: 16,
-              );
-            },
+            onTap: () => SelectClassSheet.show(context),
             child: Container(
               width: 42.w,
               height: 42.w,
@@ -224,7 +215,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildWeeklyInsightCard() {
+  Widget _buildWeeklyInsightCard(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
       padding: EdgeInsets.all(16.r),
@@ -285,12 +276,12 @@ class AttendanceOverviewScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _buildTrendBar('Mon', 0.92, '92%'),
-              _buildTrendBar('Tue', 0.88, '88%'),
-              _buildTrendBar('Wed', 0.94, '94%', isToday: true),
-              _buildTrendBar('Thu', 0.85, '85%'),
-              _buildTrendBar('Fri', 0.90, '90%'),
-              _buildTrendBar('Sat', 0.89, '89%'),
+              _buildTrendBar(context, 'Mon', 0.92, '92%'),
+              _buildTrendBar(context, 'Tue', 0.88, '88%'),
+              _buildTrendBar(context, 'Wed', 0.94, '94%', isToday: true),
+              _buildTrendBar(context, 'Thu', 0.85, '85%'),
+              _buildTrendBar(context, 'Fri', 0.90, '90%'),
+              _buildTrendBar(context, 'Sat', 0.89, '89%'),
             ],
           ),
         ],
@@ -298,40 +289,47 @@ class AttendanceOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTrendBar(String day, double ratio, String percentText,
+  Widget _buildTrendBar(BuildContext context, String day, double ratio, String percentText,
       {bool isToday = false}) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          percentText,
-          style: TextStyle(
-            fontFamily: 'Manrope',
-            fontSize: 9.sp,
-            fontWeight: FontWeight.w600,
-            color: isToday ? AppColors.primaryOlive : const Color(0xFF767272),
+    return GestureDetector(
+      onTap: () => AttendanceOverviewByDateSheet.show(
+        context,
+        date: '$day, 21 August 2026',
+      ),
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            percentText,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 9.sp,
+              fontWeight: FontWeight.w600,
+              color: isToday ? AppColors.primaryOlive : const Color(0xFF767272),
+            ),
           ),
-        ),
-        SizedBox(height: 4.h),
-        Container(
-          width: 24.w,
-          height: 120.h * ratio,
-          decoration: BoxDecoration(
-            color: isToday ? AppColors.chartLime : AppColors.primaryOlive,
-            borderRadius: BorderRadius.circular(8.r),
+          SizedBox(height: 4.h),
+          Container(
+            width: 24.w,
+            height: 120.h * ratio,
+            decoration: BoxDecoration(
+              color: isToday ? AppColors.chartLime : AppColors.primaryOlive,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
           ),
-        ),
-        SizedBox(height: 6.h),
-        Text(
-          day,
-          style: TextStyle(
-            fontFamily: 'Manrope',
-            fontSize: 11.sp,
-            fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
-            color: AppColors.primaryOlive,
+          SizedBox(height: 6.h),
+          Text(
+            day,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 11.sp,
+              fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
+              color: AppColors.primaryOlive,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

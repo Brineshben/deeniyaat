@@ -3,15 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/colors.dart';
+import '../../../routes/app_routes.dart';
 import '../controller/navigation_controller.dart';
 
 class AnimatedBottomNavBar extends StatelessWidget {
-  final ValueChanged<int> onTabSelected;
+  final ValueChanged<int>? onTabSelected;
   final Function(String moduleName)? onModuleSelected;
 
   const AnimatedBottomNavBar({
     super.key,
-    required this.onTabSelected,
+    this.onTabSelected,
     this.onModuleSelected,
   });
 
@@ -116,42 +117,58 @@ class AnimatedBottomNavBar extends StatelessWidget {
               index: 0,
               iconPath: 'assets/icons/nav_home_bold.svg',
               isActive: activeIndex == 0,
-              onTap: () {
-                navCtrl.switchTab(0);
-                onTabSelected(0);
-              },
+              onTap: () => _onTabTapped(navCtrl, 0),
             ),
             _buildTabItem(
               index: 1,
               iconPath: 'assets/icons/documents_bold.svg',
               isActive: activeIndex == 1,
-              onTap: () {
-                navCtrl.switchTab(1);
-                onTabSelected(1);
-              },
+              onTap: () => _onTabTapped(navCtrl, 1),
             ),
             _buildTabItem(
               index: 2,
-              iconPath: 'assets/icons/nav_calendar_bold.svg',
+              iconPath: 'assets/icons/calendar_mark_bold.svg',
               isActive: activeIndex == 2,
-              onTap: () {
-                navCtrl.switchTab(2);
-                onTabSelected(2);
-              },
+              onTap: () => _onTabTapped(navCtrl, 2),
             ),
             _buildTabItem(
               index: 3,
-              iconPath: 'assets/icons/nav_wallet_bold.svg',
+              iconPath: 'assets/icons/wallet_money_bold.svg',
               isActive: activeIndex == 3,
-              onTap: () {
-                navCtrl.switchTab(3);
-                onTabSelected(3);
-              },
+              onTap: () => _onTabTapped(navCtrl, 3),
             ),
           ],
         );
       }),
     );
+  }
+
+  void _onTabTapped(NavigationController navCtrl, int index) {
+    navCtrl.switchTab(index);
+    if (onTabSelected != null) {
+      onTabSelected!(index);
+    } else {
+      switch (index) {
+        case 0:
+          if (Get.currentRoute != AppRoutes.home) {
+            Get.offAllNamed(AppRoutes.home);
+          }
+          break;
+        case 1:
+          if (Get.currentRoute != AppRoutes.attendanceOverview) {
+            Get.toNamed(AppRoutes.attendanceOverview);
+          }
+          break;
+        case 2:
+          if (Get.currentRoute != AppRoutes.timetable) {
+            Get.toNamed(AppRoutes.timetable);
+          }
+          break;
+        case 3:
+          // Wallet / Fees
+          break;
+      }
+    }
   }
 
   Widget _buildTabItem({
@@ -366,17 +383,31 @@ class AnimatedBottomNavBar extends StatelessWidget {
     navCtrl.closeModuleSheet();
     if (onModuleSelected != null) {
       onModuleSelected!(moduleName);
-    } else {
-      Get.snackbar(
-        moduleName,
-        'Opening $moduleName module...',
-        snackPosition: SnackPosition.TOP,
-        duration: const Duration(seconds: 2),
-        backgroundColor: Colors.white,
-        colorText: AppColors.primaryOlive,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 16,
-      );
+      return;
+    }
+
+    switch (moduleName) {
+      case 'My Classes':
+        Get.toNamed(AppRoutes.selectClass);
+        break;
+      case 'Leave':
+      case 'Teacher Leave':
+        Get.toNamed(AppRoutes.absentAndLeaveDays);
+        break;
+      case 'Academic Calendar':
+        Get.toNamed(AppRoutes.timetable);
+        break;
+      default:
+        Get.snackbar(
+          moduleName,
+          'Opening $moduleName module...',
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.white,
+          colorText: AppColors.primaryOlive,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 16,
+        );
     }
   }
 }

@@ -22,7 +22,9 @@ void main() async {
 }
 
 class DeeniyatApp extends StatelessWidget {
-  const DeeniyatApp({super.key});
+  final String? initialRoute;
+
+  const DeeniyatApp({super.key, this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class DeeniyatApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Deeniyat Teacher App',
             getPages: AppRoutes.getPages,
-            initialRoute: AppRoutes.initial,
+            initialRoute: initialRoute ?? AppRoutes.initial,
             theme: AppTheme.lightTheme,
           ),
         );

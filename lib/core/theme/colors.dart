@@ -22,6 +22,14 @@ class AppColors {
   static const Color screenBgGradientStart = Color(0xFFEBF6D2);
   static const Color screenBgGradientEnd = Color(0xFFFAFBF7);
   static const Color cardWhite = Color(0xFFFFFFFF);
+  static const Color oliveButton = Color(0xFF829409);
+  static const Color loginButtonGreen = Color(0xFF8BA304);
+  static const Color sheetBg = Color(0xFFF6F4E8);
+  static const Color statusEarlyArrival = Color(0xFF0089EB);
+  static const Color statusPresent = Color(0xFF03B016);
+  static const Color statusAbsent = Color(0xFFD91010);
+  static const Color statusLate = Color(0xFFFF7A05);
+  static const Color statusLeave = Color(0xFF8A7A96);
 
   // Primary
   static const Color primary = Color(0xFF424B0B);
