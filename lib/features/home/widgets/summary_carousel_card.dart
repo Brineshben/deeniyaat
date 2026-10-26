@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/theme/colors.dart';
 
 class SummaryCarouselCard extends StatelessWidget {
@@ -34,13 +33,13 @@ class SummaryCarouselCard extends StatelessWidget {
             children: [
               // Card 1: Attendance Card
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                padding: EdgeInsets.symmetric(horizontal: 1.w),
                 child: _buildAttendanceCard(),
               ),
 
               // Card 2: Timetable Card
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                padding: EdgeInsets.symmetric(horizontal: 1.w),
                 child: _buildTimetableCard(),
               ),
             ],
@@ -77,6 +76,7 @@ class SummaryCarouselCard extends StatelessWidget {
       onTap: onTakeAttendanceTap,
       child: Container(
         height: 125.h,
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.r),
           boxShadow: [
@@ -101,109 +101,109 @@ class SummaryCarouselCard extends StatelessWidget {
               ),
 
               // Overlay content for interactivity & crisp text rendering
-              Padding(
-                padding: EdgeInsets.all(16.r),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.topLeft,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: 280.w,
-                      maxWidth: 340.w,
-                      maxHeight: 93.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Top tag: Attendance
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/documents_bold.svg',
-                              width: 14.w,
-                              height: 14.w,
-                              colorFilter: const ColorFilter.mode(
-                                AppColors.primaryOlive,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            SizedBox(width: 4.w),
-                            Text(
-                              'Attendance',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.primaryOlive,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // Middle headline: Take attendance >> & Attendance pending
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    'Take attendance',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontFamily: 'Manrope',
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.primaryOlive,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 6.w),
-                                SvgPicture.asset(
-                                  'assets/icons/arrow_right_double.svg',
-                                  width: 12.w,
-                                  height: 12.w,
-                                  colorFilter: const ColorFilter.mode(
-                                    AppColors.primaryOlive,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 2.h),
-                            Text(
-                              'Attendance pending',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.subtitleOlive,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // Bottom: Grade 2B
-                        Text(
-                          'Grade 2B',
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primaryOlive,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(16.r),
+              //   child: FittedBox(
+              //     fit: BoxFit.scaleDown,
+              //     alignment: Alignment.topLeft,
+              //     child: ConstrainedBox(
+              //       constraints: BoxConstraints(
+              //         minWidth: 280.w,
+              //         maxWidth: 340.w,
+              //         maxHeight: 93.h,
+              //       ),
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           // Top tag: Attendance
+              //           Row(
+              //             mainAxisSize: MainAxisSize.min,
+              //             children: [
+              //               SvgPicture.asset(
+              //                 'assets/icons/documents_bold.svg',
+              //                 width: 14.w,
+              //                 height: 14.w,
+              //                 colorFilter: const ColorFilter.mode(
+              //                   AppColors.primaryOlive,
+              //                   BlendMode.srcIn,
+              //                 ),
+              //               ),
+              //               SizedBox(width: 4.w),
+              //               Text(
+              //                 'Attendance',
+              //                 style: TextStyle(
+              //                   fontFamily: 'Manrope',
+              //                   fontSize: 10.sp,
+              //                   fontWeight: FontWeight.w500,
+              //                   color: AppColors.primaryOlive,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //
+              //           // Middle headline: Take attendance >> & Attendance pending
+              //           Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Row(
+              //                 mainAxisSize: MainAxisSize.min,
+              //                 children: [
+              //                   Flexible(
+              //                     child: Text(
+              //                       'Take attendance',
+              //                       maxLines: 1,
+              //                       overflow: TextOverflow.ellipsis,
+              //                       style: TextStyle(
+              //                         fontFamily: 'Manrope',
+              //                         fontSize: 16.sp,
+              //                         fontWeight: FontWeight.w600,
+              //                         color: AppColors.primaryOlive,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                   SizedBox(width: 6.w),
+              //                   SvgPicture.asset(
+              //                     'assets/icons/arrow_right_double.svg',
+              //                     width: 12.w,
+              //                     height: 12.w,
+              //                     colorFilter: const ColorFilter.mode(
+              //                       AppColors.primaryOlive,
+              //                       BlendMode.srcIn,
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //               SizedBox(height: 2.h),
+              //               Text(
+              //                 'Attendance pending',
+              //                 maxLines: 1,
+              //                 overflow: TextOverflow.ellipsis,
+              //                 style: TextStyle(
+              //                   fontFamily: 'Manrope',
+              //                   fontSize: 10.sp,
+              //                   fontWeight: FontWeight.w400,
+              //                   color: AppColors.subtitleOlive,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //
+              //           // Bottom: Grade 2B
+              //           Text(
+              //             'Grade 2B',
+              //             style: TextStyle(
+              //               fontFamily: 'Manrope',
+              //               fontSize: 12.sp,
+              //               fontWeight: FontWeight.w500,
+              //               color: AppColors.primaryOlive,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -240,110 +240,110 @@ class SummaryCarouselCard extends StatelessWidget {
               ),
 
               // Overlay content
-              Padding(
-                padding: EdgeInsets.all(16.r),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.topLeft,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: 280.w,
-                      maxWidth: 340.w,
-                      maxHeight: 93.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Top tag: Timetable & Next class
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/calendar_mark_bold.svg',
-                                  width: 14.w,
-                                  height: 14.w,
-                                  colorFilter: const ColorFilter.mode(
-                                    AppColors.primaryOlive,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  'Timetable',
-                                  style: TextStyle(
-                                    fontFamily: 'Manrope',
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.primaryOlive,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Flexible(
-                              child: Text(
-                                'Next class',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.primaryOlive,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // Middle: Qur'an & Tajweed & 10:00 am-10:45 am
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Qur’an & Tajweed',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryOlive,
-                              ),
-                            ),
-                            SizedBox(height: 2.h),
-                            Text(
-                              '10:00 am–10:45 am',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.subtitleOlive,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // Bottom: Grade 2B
-                        Text(
-                          'Grade 2B',
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primaryOlive,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(16.r),
+              //   child: FittedBox(
+              //     fit: BoxFit.scaleDown,
+              //     alignment: Alignment.topLeft,
+              //     child: ConstrainedBox(
+              //       constraints: BoxConstraints(
+              //         minWidth: 280.w,
+              //         maxWidth: 340.w,
+              //         maxHeight: 93.h,
+              //       ),
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           // Top tag: Timetable & Next class
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               Row(
+              //                 mainAxisSize: MainAxisSize.min,
+              //                 children: [
+              //                   SvgPicture.asset(
+              //                     'assets/icons/calendar_mark_bold.svg',
+              //                     width: 14.w,
+              //                     height: 14.w,
+              //                     colorFilter: const ColorFilter.mode(
+              //                       AppColors.primaryOlive,
+              //                       BlendMode.srcIn,
+              //                     ),
+              //                   ),
+              //                   SizedBox(width: 4.w),
+              //                   Text(
+              //                     'Timetable',
+              //                     style: TextStyle(
+              //                       fontFamily: 'Manrope',
+              //                       fontSize: 10.sp,
+              //                       fontWeight: FontWeight.w500,
+              //                       color: AppColors.primaryOlive,
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //               Flexible(
+              //                 child: Text(
+              //                   'Next class',
+              //                   maxLines: 1,
+              //                   overflow: TextOverflow.ellipsis,
+              //                   style: TextStyle(
+              //                     fontFamily: 'Manrope',
+              //                     fontSize: 10.sp,
+              //                     fontWeight: FontWeight.w500,
+              //                     color: AppColors.primaryOlive,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //
+              //           // Middle: Qur'an & Tajweed & 10:00 am-10:45 am
+              //           Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text(
+              //                 'Qur’an & Tajweed',
+              //                 maxLines: 1,
+              //                 overflow: TextOverflow.ellipsis,
+              //                 style: TextStyle(
+              //                   fontFamily: 'Manrope',
+              //                   fontSize: 16.sp,
+              //                   fontWeight: FontWeight.w600,
+              //                   color: AppColors.primaryOlive,
+              //                 ),
+              //               ),
+              //               SizedBox(height: 2.h),
+              //               Text(
+              //                 '10:00 am–10:45 am',
+              //                 maxLines: 1,
+              //                 overflow: TextOverflow.ellipsis,
+              //                 style: TextStyle(
+              //                   fontFamily: 'Manrope',
+              //                   fontSize: 10.sp,
+              //                   fontWeight: FontWeight.w400,
+              //                   color: AppColors.subtitleOlive,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //
+              //           // Bottom: Grade 2B
+              //           Text(
+              //             'Grade 2B',
+              //             style: TextStyle(
+              //               fontFamily: 'Manrope',
+              //               fontSize: 12.sp,
+              //               fontWeight: FontWeight.w500,
+              //               color: AppColors.primaryOlive,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

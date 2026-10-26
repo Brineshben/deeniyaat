@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../routes/app_routes.dart';
 import '../model/home_data_model.dart';
 
 class HomeController extends GetxController {
@@ -114,16 +115,7 @@ class HomeController extends GetxController {
   }
 
   void onViewFeeInsightsPressed() {
-    Get.snackbar(
-      'Fee Collection',
-      'Navigating to Fee Insights',
-      snackPosition: SnackPosition.TOP,
-      duration: const Duration(seconds: 2),
-      backgroundColor: Colors.white,
-      colorText: const Color(0xFF424B0B),
-      margin: const EdgeInsets.all(16),
-      borderRadius: 16,
-    );
+    Get.toNamed(AppRoutes.feeOverview);
   }
 
   void onViewLeavesPressed() {

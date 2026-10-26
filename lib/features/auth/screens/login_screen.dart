@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../../core/theme/colors.dart';
+import '../../../core/utils/responsive.dart';
 import '../controller/auth_controller.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -14,252 +14,406 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          // Background Image
+          // Background Image (Figma 206:17448)
           Positioned.fill(
             child: Image.asset(
               'assets/images/login_bg.png',
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
-                color: const Color(0xFFF9FAF5),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFFEBF6D2),
+                      Color(0xFFF9FAF5),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
 
           // Content
           SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Form(
-                key: controller.formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 48.h),
-
-                    // Logo
-                    Center(
-                      child: Image.asset(
-                        'assets/images/deeniyat_logo.png',
-                        height: 56.h,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+            child: MaxWidthBox(
+              maxWidth: 480,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
                       ),
-                    ),
-
-                    SizedBox(height: 28.h),
-
-                    // Greeting (Centered in Figma 174:3131)
-                    Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Welcome Back.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 30.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primaryOlive,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          SizedBox(height: 6.h),
-                          Text(
-                            'Empowering teachers, simplifying learning.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.subtitleOlive,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 36.h),
-
-                    // Email Field
-                    Text(
-                      'Email ID',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.subtitleOlive,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    TextFormField(
-                      controller: controller.emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 14.sp,
-                        color: AppColors.textDark,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Enter Email ID',
-                        hintStyle: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 14.sp,
-                          color: AppColors.textMuted,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: 18.w, right: 12.w),
-                          child: Icon(
-                            Icons.mail_outline_rounded,
-                            size: 20.sp,
-                            color: AppColors.subtitleOlive,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 15.h,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.r),
-                          borderSide: BorderSide(
-                            color: Colors.black.withValues(alpha: 0.10),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.r),
-                          borderSide: BorderSide(
-                            color: Colors.black.withValues(alpha: 0.10),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.r),
-                          borderSide: const BorderSide(
-                            color: AppColors.primaryOlive,
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 18.h),
-
-                    // Password Field
-                    Text(
-                      'Password',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.subtitleOlive,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Obx(
-                      () => TextFormField(
-                        controller: controller.passwordController,
-                        obscureText: controller.isPasswordHidden.value,
-                        style: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 14.sp,
-                          color: AppColors.textDark,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'Enter Password',
-                          hintStyle: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 14.sp,
-                            color: AppColors.textMuted,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          prefixIcon: Padding(
-                            padding: EdgeInsets.only(left: 18.w, right: 12.w),
-                            child: Icon(
-                              Icons.lock_outline_rounded,
-                              size: 20.sp,
-                              color: AppColors.subtitleOlive,
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 20.w,
-                            vertical: 15.h,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.r),
-                            borderSide: BorderSide(
-                              color: Colors.black.withValues(alpha: 0.10),
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.r),
-                            borderSide: BorderSide(
-                              color: Colors.black.withValues(alpha: 0.10),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.r),
-                            borderSide: const BorderSide(
-                              color: AppColors.primaryOlive,
-                              width: 1.5,
-                            ),
-                          ),
-                          suffixIcon: Padding(
-                            padding: EdgeInsets.only(right: 8.w),
-                            child: IconButton(
-                              icon: Icon(
-                                controller.isPasswordHidden.value
-                                    ? Icons.visibility_outlined
-                                    : Icons.visibility_off_outlined,
-                                color: AppColors.subtitleOlive,
-                                size: 20.sp,
-                              ),
-                              onPressed: controller.togglePasswordVisibility,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 12.h),
-
-                    // Remember Me & Forgot Password
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                      child: IntrinsicHeight(
+                        child: Form(
+                          key: controller.formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Obx(
-                                () => SizedBox(
-                                  height: 24.h,
-                                  width: 24.w,
-                                  child: Checkbox(
-                                    value: controller.rememberMe.value,
-                                    onChanged: controller.toggleRememberMe,
-                                    activeColor: AppColors.primaryOlive,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4.r),
+                              SizedBox(height: 36.h),
+
+                              // Logo (Left-aligned in Figma 206:17450)
+                              Image.asset(
+                                'assets/images/deeniyat_logo.png',
+                                width: 121.w,
+                                height: 33.h,
+                                fit: BoxFit.contain,
+                                alignment: Alignment.centerLeft,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const SizedBox.shrink(),
+                              ),
+
+                              SizedBox(height: 36.h),
+
+                              // Greeting (Left-aligned in Figma 206:17471)
+                              Text(
+                                'Welcome Back.',
+                                style: TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF32361B),
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                              SizedBox(height: 6.h),
+                              ShaderMask(
+                                shaderCallback: (bounds) => const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xFF7D8F04),
+                                    Color(0xFF4B5510),
+                                  ],
+                                ).createShader(bounds),
+                                child: Text(
+                                  'Empowering education, simplifying learning.',
+                                  style: TextStyle(
+                                    fontFamily: 'Manrope',
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    height: 1.25,
+                                    letterSpacing: -0.3,
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(height: 36.h),
+
+                              // Email Field
+                              Text(
+                                'Email ID',
+                                style: TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF32361B),
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              TextFormField(
+                                controller: controller.emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                style: TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 14.sp,
+                                  color: const Color(0xFF32361B),
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Email ID',
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'Manrope',
+                                    fontSize: 13.sp,
+                                    color: const Color(0xFF767272),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 14.h,
+                                  ),
+                                  prefixIcon: Padding(
+                                    padding: EdgeInsets.only(left: 16.w, right: 10.w),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/icon_letter.svg',
+                                      width: 16.w,
+                                      height: 16.w,
+                                      colorFilter: const ColorFilter.mode(
+                                        Color(0xFF32361B),
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                  prefixIconConstraints: BoxConstraints(
+                                    minWidth: 42.w,
+                                    minHeight: 20.h,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    borderSide: BorderSide(
+                                      color: const Color(0xFF2F533A)
+                                          .withValues(alpha: 0.30),
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    borderSide: BorderSide(
+                                      color: const Color(0xFF2F533A)
+                                          .withValues(alpha: 0.30),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF424B0B),
+                                      width: 1.5,
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 6.w),
-                              Flexible(
-                                child: GestureDetector(
-                                  onTap: () => controller.toggleRememberMe(
-                                      !controller.rememberMe.value),
+
+                              SizedBox(height: 16.h),
+
+                              // Password Field
+                              Text(
+                                'Password',
+                                style: TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF32361B),
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Obx(
+                                () => TextFormField(
+                                  controller: controller.passwordController,
+                                  obscureText: controller.isPasswordHidden.value,
+                                  style: TextStyle(
+                                    fontFamily: 'Manrope',
+                                    fontSize: 14.sp,
+                                    color: const Color(0xFF32361B),
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Password',
+                                    hintStyle: TextStyle(
+                                      fontFamily: 'Manrope',
+                                      fontSize: 13.sp,
+                                      color: const Color(0xFF767272),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                      vertical: 14.h,
+                                    ),
+                                    prefixIcon: Padding(
+                                      padding: EdgeInsets.only(left: 16.w, right: 10.w),
+                                      child: Icon(
+                                        Icons.lock_outline_rounded,
+                                        size: 18.sp,
+                                        color: const Color(0xFF32361B),
+                                      ),
+                                    ),
+                                    prefixIconConstraints: BoxConstraints(
+                                      minWidth: 42.w,
+                                      minHeight: 20.h,
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 8.w),
+                                      child: IconButton(
+                                        icon: Icon(
+                                          controller.isPasswordHidden.value
+                                              ? Icons.visibility_off_outlined
+                                              : Icons.visibility_outlined,
+                                          color: const Color(0xFF32361B),
+                                          size: 20.sp,
+                                        ),
+                                        onPressed:
+                                            controller.togglePasswordVisibility,
+                                      ),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.r),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xFF2F533A)
+                                            .withValues(alpha: 0.30),
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.r),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xFF2F533A)
+                                            .withValues(alpha: 0.30),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50.r),
+                                      borderSide: const BorderSide(
+                                        color: Color(0xFF424B0B),
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(height: 14.h),
+
+                              // Remember Me & Forgot Password (Figma 206:17481)
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: GestureDetector(
+                                      onTap: () => controller.toggleRememberMe(
+                                          !controller.rememberMe.value),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Obx(
+                                            () => Container(
+                                              width: 18.w,
+                                              height: 18.w,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(4.r),
+                                                border: Border.all(
+                                                  color: const Color(0xFF2F533A)
+                                                      .withValues(alpha: 0.4),
+                                                  width: 1.2,
+                                                ),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: controller.rememberMe.value
+                                                  ? Icon(
+                                                      Icons.check,
+                                                      size: 13.w,
+                                                      color:
+                                                          const Color(0xFF32361B),
+                                                    )
+                                                  : null,
+                                            ),
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Flexible(
+                                            child: Text(
+                                              'Keep me signed in',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontFamily: 'Manrope',
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color(0xFF32361B),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Text(
+                                      'Forget Password?',
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontFamily: 'Manrope',
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xFF32361B),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              SizedBox(height: 24.h),
+
+                              // Login Button (Figma 206:17486: Height 50, Color #8BA304, Pill 50.r)
+                              Obx(
+                                () => SizedBox(
+                                  width: double.infinity,
+                                  height: 50.h,
+                                  child: ElevatedButton(
+                                    onPressed: controller.isLoading.value
+                                        ? null
+                                        : controller.login,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF8BA304),
+                                      foregroundColor: Colors.white,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50.r),
+                                      ),
+                                    ),
+                                    child: controller.isLoading.value
+                                        ? SizedBox(
+                                            height: 20.h,
+                                            width: 20.h,
+                                            child:
+                                                const CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.white),
+                                            ),
+                                          )
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Login',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              SizedBox(width: 8.w),
+                                              SvgPicture.asset(
+                                                'assets/icons/arrow_right_linear.svg',
+                                                width: 16.w,
+                                                height: 16.h,
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  Colors.white,
+                                                  BlendMode.srcIn,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
+                                ),
+                              ),
+
+                              // Pushes footer to bottom
+                              const Spacer(),
+
+                              // Footer App Version (Figma 206:17487)
+                              Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: 20.h),
                                   child: Text(
-                                    'Keep me signed in',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                    'Deeniyat Teacher App V 1.01',
                                     style: TextStyle(
                                       fontFamily: 'Manrope',
-                                      fontSize: 12.sp,
+                                      fontSize: 10.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.subtitleOlive,
+                                      color: const Color(0xFF32361B)
+                                          .withValues(alpha: 0.5),
                                     ),
                                   ),
                                 ),
@@ -267,99 +421,10 @@ class LoginScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(width: 8.w),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            'Forget Password?',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.subtitleOlive,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 28.h),
-
-                    // Login Button (Pill 50.r, Height 54.h in Figma)
-                    Obx(
-                      () => SizedBox(
-                        width: double.infinity,
-                        height: 54.h,
-                        child: ElevatedButton(
-                          onPressed: controller.isLoading.value
-                              ? null
-                              : controller.login,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.loginButtonGreen,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.r),
-                            ),
-                          ),
-                          child: controller.isLoading.value
-                              ? SizedBox(
-                                  height: 20.h,
-                                  width: 20.h,
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Login',
-                                      style: TextStyle(
-                                        fontFamily: 'Manrope',
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(width: 10.w),
-                                    SvgPicture.asset(
-                                      'assets/icons/arrow_right_linear.svg',
-                                      width: 16.w,
-                                      height: 16.h,
-                                      colorFilter: const ColorFilter.mode(
-                                        Colors.white,
-                                        BlendMode.srcIn,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        ),
                       ),
                     ),
-
-                    SizedBox(height: 36.h),
-
-                    // Footer App Version
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 24.h),
-                        child: Text(
-                          'Deeniyat Teacher App V 1.01',
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.subtitleOlive,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ),

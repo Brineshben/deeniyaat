@@ -44,51 +44,34 @@ class AttendanceOverviewScreen extends StatelessWidget {
             ),
           ),
 
-          // Main Responsive Content
+          // Main Responsive Content (fits screen, no scroll)
           SafeArea(
             bottom: false,
             child: MaxWidthBox(
               maxWidth: 480,
               child: Stack(
                 children: [
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 12.h),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(context),
+                      SizedBox(height: 12.h),
+                      _buildGradeFilterPills(controller),
+                      SizedBox(height: 12.h),
 
-                        // Header (Title & Add Button)
-                        _buildHeader(context),
+                      // Weekly card takes all remaining height
+                      Expanded(child: _buildWeeklyInsightCard(context)),
 
-                        SizedBox(height: 16.h),
+                      SizedBox(height: 10.h),
+                      _buildCriticalAttendanceInsightCard(context),
+                      SizedBox(height: 10.h),
+                      _buildAbsenteesCard(context),
+                      SizedBox(height: 10.h),
+                      _buildLeaveDataCard(context),
 
-                        // Grade filter pills
-                        _buildGradeFilterPills(controller),
-
-                        SizedBox(height: 14.h),
-
-                        // Weekly Insight Card
-                        _buildWeeklyInsightCard(context),
-
-                        SizedBox(height: 12.h),
-
-                        // Card: Attendance Insight (Students critically low)
-                        _buildCriticalAttendanceInsightCard(context),
-
-                        SizedBox(height: 12.h),
-
-                        // Card: View absentees data
-                        _buildAbsenteesCard(context),
-
-                        SizedBox(height: 12.h),
-
-                        // Card: View leave data
-                        _buildLeaveDataCard(context),
-
-                        SizedBox(height: 100.h),
-                      ],
-                    ),
+                      // Space reserved for floating nav bar
+                      SizedBox(height: 96.h),
+                    ],
                   ),
 
                   // Floating Animated Bottom Nav Bar
@@ -269,28 +252,49 @@ class AttendanceOverviewScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 18.h),
+          SizedBox(height: 12.h),
 
-          // Visual bar graph with percentage labels
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              _buildTrendBar(context, 'Mon', 0.92, '92%'),
-              _buildTrendBar(context, 'Tue', 0.88, '88%'),
-              _buildTrendBar(context, 'Wed', 0.94, '94%', isToday: true),
-              _buildTrendBar(context, 'Thu', 0.85, '85%'),
-              _buildTrendBar(context, 'Fri', 0.90, '90%'),
-              _buildTrendBar(context, 'Sat', 0.89, '89%'),
-            ],
+          // Bar graph fills remaining card height
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Reserve room for % label, day label and gaps
+                final reserved = 38.sp + 10.h;
+                final maxBarHeight =
+                (constraints.maxHeight - reserved).clamp(20.0, 140.h);
+
+                return Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _buildTrendBar(context, 'Mon', 0.92, '92%', maxBarHeight),
+                      _buildTrendBar(context, 'Tue', 0.88, '88%', maxBarHeight),
+                      _buildTrendBar(context, 'Wed', 0.94, '94%', maxBarHeight,
+                          isToday: true),
+                      _buildTrendBar(context, 'Thu', 0.85, '85%', maxBarHeight),
+                      _buildTrendBar(context, 'Fri', 0.90, '90%', maxBarHeight),
+                      _buildTrendBar(context, 'Sat', 0.89, '89%', maxBarHeight),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTrendBar(BuildContext context, String day, double ratio, String percentText,
-      {bool isToday = false}) {
+  Widget _buildTrendBar(
+      BuildContext context,
+      String day,
+      double ratio,
+      String percentText,
+      double maxBarHeight, {
+        bool isToday = false,
+      }) {
     return GestureDetector(
       onTap: () => AttendanceOverviewByDateSheet.show(
         context,
@@ -312,7 +316,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
           SizedBox(height: 4.h),
           Container(
             width: 24.w,
-            height: 120.h * ratio,
+            height: maxBarHeight * ratio,
             decoration: BoxDecoration(
               color: isToday ? AppColors.chartLime : AppColors.primaryOlive,
               borderRadius: BorderRadius.circular(8.r),
@@ -336,7 +340,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
   Widget _buildCriticalAttendanceInsightCard(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.all(16.r),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24.r),
@@ -350,6 +354,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
@@ -374,7 +379,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 8.h),
           Row(
             children: [
               Expanded(
@@ -398,11 +403,11 @@ class AttendanceOverviewScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 8.h),
           GestureDetector(
             onTap: () {
               Get.to(
-                () => const StudentsRequiringAttentionScreen(),
+                    () => const StudentsRequiringAttentionScreen(),
                 transition: Transition.downToUp,
                 duration: const Duration(milliseconds: 300),
               );
@@ -426,7 +431,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.to(
-          () => const AbsentAndLeaveDaysScreen(),
+              () => const AbsentAndLeaveDaysScreen(),
           transition: Transition.downToUp,
           duration: const Duration(milliseconds: 300),
         );
@@ -508,7 +513,7 @@ class AttendanceOverviewScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.to(
-          () => const AbsentAndLeaveDaysScreen(),
+              () => const AbsentAndLeaveDaysScreen(),
           transition: Transition.downToUp,
           duration: const Duration(milliseconds: 300),
         );

@@ -9,11 +9,13 @@ import '../controller/navigation_controller.dart';
 class AnimatedBottomNavBar extends StatelessWidget {
   final ValueChanged<int>? onTabSelected;
   final Function(String moduleName)? onModuleSelected;
+  final bool showProfileAvatar;
 
   const AnimatedBottomNavBar({
     super.key,
     this.onTabSelected,
     this.onModuleSelected,
+    this.showProfileAvatar = false,
   });
 
   @override
@@ -61,9 +63,15 @@ class AnimatedBottomNavBar extends StatelessWidget {
 
                   SizedBox(width: 8.w),
 
-                  // Floating Circular Toggle Button (4-squares <-> Close X)
+                  // Floating Circular Toggle Button (4-squares <-> Close X or Profile Avatar)
                   GestureDetector(
-                    onTap: navCtrl.toggleModuleSheet,
+                    onTap: showProfileAvatar
+                        ? () {
+                            if (Get.currentRoute != AppRoutes.profile) {
+                              Get.toNamed(AppRoutes.profile);
+                            }
+                          }
+                        : navCtrl.toggleModuleSheet,
                     child: Container(
                       width: 56.w,
                       height: 56.w,
@@ -79,20 +87,31 @@ class AnimatedBottomNavBar extends StatelessWidget {
                         ],
                       ),
                       alignment: Alignment.center,
-                      child: Transform.rotate(
-                        angle: navCtrl.fabRotationAnimation.value * 2 * 3.14159,
-                        child: SvgPicture.asset(
-                          expandProgress > 0.5
-                              ? 'assets/icons/close_linear.svg'
-                              : 'assets/icons/nav_widget_bold.svg',
-                          width: 24.w,
-                          height: 24.w,
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.primaryOlive,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
+                      child: showProfileAvatar
+                          ? ClipOval(
+                              child: Image.asset(
+                                'assets/images/teacher_avatar_ansari.png',
+                                width: 56.w,
+                                height: 56.w,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Icon(Icons.person, size: 28.w, color: AppColors.primaryOlive),
+                              ),
+                            )
+                          : Transform.rotate(
+                              angle: navCtrl.fabRotationAnimation.value * 2 * 3.14159,
+                              child: SvgPicture.asset(
+                                expandProgress > 0.5
+                                    ? 'assets/icons/close_linear.svg'
+                                    : 'assets/icons/nav_widget_bold.svg',
+                                width: 24.w,
+                                height: 24.w,
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.primaryOlive,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
                     ),
                   ),
                 ],
@@ -109,7 +128,18 @@ class AnimatedBottomNavBar extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 5.h),
       child: Obx(() {
-        final activeIndex = navCtrl.currentTabIndex.value;
+        int activeIndex = navCtrl.currentTabIndex.value;
+        if (Get.currentRoute == AppRoutes.feeOverview ||
+            Get.currentRoute == AppRoutes.feeStudentOverview) {
+          activeIndex = 3;
+        } else if (Get.currentRoute == AppRoutes.timetable) {
+          activeIndex = 2;
+        } else if (Get.currentRoute == AppRoutes.attendanceOverview) {
+          activeIndex = 1;
+        } else if (Get.currentRoute == AppRoutes.home) {
+          activeIndex = 0;
+        }
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -165,7 +195,9 @@ class AnimatedBottomNavBar extends StatelessWidget {
           }
           break;
         case 3:
-          // Wallet / Fees
+          if (Get.currentRoute != AppRoutes.feeOverview) {
+            Get.toNamed(AppRoutes.feeOverview);
+          }
           break;
       }
     }
@@ -396,6 +428,14 @@ class AnimatedBottomNavBar extends StatelessWidget {
         break;
       case 'Academic Calendar':
         Get.toNamed(AppRoutes.timetable);
+        break;
+      case 'Fees':
+      case 'Fee':
+        Get.toNamed(AppRoutes.feeOverview);
+        break;
+      case 'Profile':
+      case 'My Profile':
+        Get.toNamed(AppRoutes.profile);
         break;
       default:
         Get.snackbar(

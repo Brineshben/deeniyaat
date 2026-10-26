@@ -9,6 +9,10 @@ import '../features/attendance/screens/attendance_overview_by_date_screen.dart';
 import '../features/attendance/screens/select_class_screen.dart';
 import '../features/attendance/screens/mark_attendance_screen.dart';
 import '../features/timetable/screens/timetable_screen.dart';
+import '../features/fee/controller/fee_controller.dart';
+import '../features/fee/screens/fee_overview_screen.dart';
+import '../features/fee/screens/fee_student_overview_screen.dart';
+import '../features/profile/screens/profile_screen.dart';
 
 class AppRoutes {
   static const String initial = '/login';
@@ -22,6 +26,9 @@ class AppRoutes {
   static const String selectClass = '/select-class';
   static const String markAttendance = '/mark-attendance';
   static const String timetable = '/timetable';
+  static const String feeOverview = '/fee-overview';
+  static const String feeStudentOverview = '/fee-student-overview';
+  static const String profile = '/profile';
 
   static final getPages = [
     GetPage(
@@ -73,6 +80,31 @@ class AppRoutes {
       name: timetable,
       page: () => const TimetableScreen(),
       transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: feeOverview,
+      page: () => const FeeOverviewScreen(),
+      transition: Transition.fadeIn,
+      binding: BindingsBuilder(() {
+        if (!Get.isRegistered<FeeController>()) {
+          Get.put(FeeController());
+        }
+      }),
+    ),
+    GetPage(
+      name: feeStudentOverview,
+      page: () => const FeeStudentOverviewScreen(),
+      transition: Transition.rightToLeft,
+      binding: BindingsBuilder(() {
+        if (!Get.isRegistered<FeeController>()) {
+          Get.put(FeeController());
+        }
+      }),
+    ),
+    GetPage(
+      name: profile,
+      page: () => const ProfileScreen(),
+      transition: Transition.fadeIn,
     ),
   ];
 }
